@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "adadbe4a26a9bbd2f7995a334e788afa",
+    "content-hash": "aeba9b4ad6e047549757a0848eb9879a",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -6213,6 +6213,62 @@
             "time": "2023-11-13T09:31:12+00:00"
         },
         {
+            "name": "onelogin/php-saml",
+            "version": "4.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/onelogin/php-saml.git",
+                "reference": "b22a57ebd13e838b90df5d3346090bc37056409d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/onelogin/php-saml/zipball/b22a57ebd13e838b90df5d3346090bc37056409d",
+                "reference": "b22a57ebd13e838b90df5d3346090bc37056409d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.3",
+                "robrichards/xmlseclibs": ">=3.1.1"
+            },
+            "require-dev": {
+                "pdepend/pdepend": "^2.8.0",
+                "php-coveralls/php-coveralls": "^2.0",
+                "phploc/phploc": "^4.0 || ^5.0 || ^6.0 || ^7.0",
+                "phpunit/phpunit": "^9.5",
+                "sebastian/phpcpd": "^4.0 || ^5.0 || ^6.0 ",
+                "squizlabs/php_codesniffer": "^3.5.8"
+            },
+            "suggest": {
+                "ext-curl": "Install curl lib to be able to use the IdPMetadataParser for parsing remote XMLs",
+                "ext-dom": "Install xml lib",
+                "ext-openssl": "Install openssl lib in order to handle with x509 certs (require to support sign and encryption)",
+                "ext-zlib": "Install zlib"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "OneLogin\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "OneLogin PHP SAML Toolkit",
+            "homepage": "https://developers.onelogin.com/saml/php",
+            "keywords": [
+                "SAML2",
+                "onelogin",
+                "saml"
+            ],
+            "support": {
+                "email": "sixto.garcia@onelogin.com",
+                "issues": "https://github.com/onelogin/php-saml/issues",
+                "source": "https://github.com/onelogin/php-saml/"
+            },
+            "time": "2022-07-15T20:44:36+00:00"
+        },
+        {
             "name": "openai-php/client",
             "version": "v0.5.3",
             "source": {
@@ -7318,6 +7374,86 @@
             "time": "2023-09-13T16:42:03+00:00"
         },
         {
+            "name": "processmaker/base-info",
+            "version": "1.0.0",
+            "dist": {
+                "type": "path",
+                "url": "../pm4core-plugins/base-info",
+                "reference": "0e8546436bc71f8f8f3d6be00597ab7872eda086"
+            },
+            "type": "project",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "ProcessMaker\\Package\\BaseInfo\\PackageServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ProcessMaker\\Package\\BaseInfo\\": "src"
+                }
+            },
+            "scripts": {
+                "post-create-project-cmd": [
+                    "@php rename-project.php"
+                ]
+            },
+            "license": [
+                "AGPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "PmLearning",
+                    "email": "info@PmLearning.ir"
+                }
+            ],
+            "description": "Base Info to create base info for PishroBPMS",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "processmaker/data-source",
+            "version": "1.0.0",
+            "dist": {
+                "type": "path",
+                "url": "../pm4core-plugins/data-source",
+                "reference": "64dc280a6612556fdd792c4d219f065941e52110"
+            },
+            "type": "project",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "ProcessMaker\\Package\\DataSource\\PackageServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ProcessMaker\\Package\\DataSource\\": "src"
+                }
+            },
+            "scripts": {
+                "post-create-project-cmd": [
+                    "@php rename-project.php"
+                ]
+            },
+            "license": [
+                "AGPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "PmLearning",
+                    "email": "info@PmLearning.ir"
+                }
+            ],
+            "description": "Data Source to create data source for PishroBPMS",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
             "name": "processmaker/docker-executor-lua",
             "version": "1.0.1",
             "source": {
@@ -7569,6 +7705,46 @@
                 "source": "https://github.com/ProcessMaker/pmql/tree/v1.12.1"
             },
             "time": "2023-12-08T03:35:17+00:00"
+        },
+        {
+            "name": "processmaker/report-maker",
+            "version": "1.0.0",
+            "dist": {
+                "type": "path",
+                "url": "../pm4core-plugins/report-maker",
+                "reference": "f04790c2040759e3ef371ffaed76effc2f19871e"
+            },
+            "type": "project",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "ProcessMaker\\Package\\ReportMaker\\PackageServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ProcessMaker\\Package\\ReportMaker\\": "src"
+                }
+            },
+            "scripts": {
+                "post-create-project-cmd": [
+                    "@php rename-project.php"
+                ]
+            },
+            "license": [
+                "AGPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "PmLearning",
+                    "email": "info@PmLearning.ir"
+                }
+            ],
+            "description": "Report Maker to create reports and charts for PishroBPMS",
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "psr/cache",
@@ -8396,6 +8572,56 @@
                 }
             ],
             "time": "2023-11-08T05:53:05+00:00"
+        },
+        {
+            "name": "ridoy-sarker/saml-auth",
+            "version": "1.0.0",
+            "dist": {
+                "type": "path",
+                "url": "../pm4core-plugins/saml-auth",
+                "reference": "62673f06c8fe2816e147da5099005f702ae56619"
+            },
+            "require": {
+                "ext-openssl": "*",
+                "onelogin/php-saml": "^3.0|^4.0"
+            },
+            "type": "project",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Saml2": "ProcessMaker\\Package\\SamlAuth\\Facades\\Auth"
+                    },
+                    "providers": [
+                        "ProcessMaker\\Package\\SamlAuth\\PackageServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ProcessMaker\\Package\\SamlAuth\\": "src"
+                },
+                "files": [
+                    "src/helpers.php"
+                ]
+            },
+            "scripts": {
+                "post-create-project-cmd": [
+                    "@php rename-project.php"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ridoy Chandra Sarker",
+                    "email": "csridoy42@gmail.com"
+                }
+            ],
+            "description": "Laravel SAML Single Sign on (SSO) plugin acts as a SAML Service Provider",
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "robrichards/xmlseclibs",

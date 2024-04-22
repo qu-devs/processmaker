@@ -42,16 +42,20 @@
         "php-amqplib/php-amqplib": "^3.5",
         "pion/laravel-chunk-upload": "^1.5",
         "predis/predis": "^2.0",
+        "processmaker/base-info": "^1.0",
+        "processmaker/data-source": "^1.0",
         "processmaker/docker-executor-lua": "^1.0",
         "processmaker/docker-executor-node": "1.1.0",
         "processmaker/docker-executor-php": "1.2.0",
         "processmaker/laravel-i18next": "dev-master",
         "processmaker/nayra": "1.10.0",
         "processmaker/pmql": "1.12.1",
+        "processmaker/report-maker": "^1.0",
         "psr/http-message": "^1.1",
         "psr/simple-cache": "^2.0",
         "pusher/pusher-php-server": "^7.0",
         "ralouphie/getallheaders": "^3.0",
+        "ridoy-sarker/saml-auth": "^1.0",
         "spatie/laravel-fractal": "^6.0",
         "spatie/laravel-medialibrary": "^10.7",
         "spomky-labs/otphp": "^11.2",
@@ -201,6 +205,22 @@
         {
             "type": "vcs",
             "url": "https://github.com/ProcessMaker/SocialiteProviders"
+        },
+        {
+            "type": "path",
+            "url": "../pm4core-plugins/report-maker"
+        },
+        {
+            "type": "path",
+            "url": "../pm4core-plugins/base-info"
+        },
+        {
+            "type": "path",
+            "url": "../pm4core-plugins/data-source"
+        },
+        {
+            "type": "path",
+            "url": "../pm4core-plugins/saml-auth"
         }
     ],
     "config": {
