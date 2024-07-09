@@ -16,8 +16,12 @@
 			"databasePath": "/database/laravel-echo-server.sqlite"
 		}
 	},
-	"protocol": "http",
+	"protocol": "https",
 	"socketio": {},
+	"sslCertPath": "/etc/nginx/ssl/pm.crt",
+	"sslKeyPath": "/etc/nginx/ssl/pm.key",
+	"sslCertChainPath": "",
+	"sslPassphrase": "",
 	"subscribers": {
 		"http": true,
 		"redis": true

@@ -252,6 +252,10 @@ class LoginController extends Controller
             session()->remove(TwoFactorAuthController::TFA_ERROR);
         }
 
+        if (saml2login()) {
+            return saml2logout();
+        }
+
         return $this->logout($request);
     }
 
