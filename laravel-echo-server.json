@@ -18,8 +18,8 @@
 	},
 	"protocol": "https",
 	"socketio": {},
-	"sslCertPath": "/etc/nginx/ssl/pm.crt",
-	"sslKeyPath": "/etc/nginx/ssl/pm.key",
+	"sslCertPath": "/etc/nginx/ssl/pm.qu.edu.sa.crt",
+	"sslKeyPath": "/etc/nginx/ssl/pm.qu.edu.sa.key",
 	"sslCertChainPath": "",
 	"sslPassphrase": "",
 	"subscribers": {
