@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fbdd5587a602fa944d6bd065aef09e6a",
+    "content-hash": "fb8232906aa9818a11a7f72b385e2c67",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -7750,6 +7750,46 @@
                 }
             ],
             "description": "Report Maker to create reports and charts for PishroBPMS",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "processmaker/resources",
+            "version": "1.0.0",
+            "dist": {
+                "type": "path",
+                "url": "../pm4core-plugins/resources",
+                "reference": "fe462db49e8f91adc579988aa48f1f5ca8014f65"
+            },
+            "type": "project",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "ProcessMaker\\Package\\Resources\\PackageServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ProcessMaker\\Package\\Resources\\": "src"
+                }
+            },
+            "scripts": {
+                "post-create-project-cmd": [
+                    "@php rename-project.php"
+                ]
+            },
+            "license": [
+                "AGPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Sarah",
+                    "email": "info@sarah.me"
+                }
+            ],
+            "description": "Resources for publish resources in ProcessMaker",
             "transport-options": {
                 "relative": true
             }
