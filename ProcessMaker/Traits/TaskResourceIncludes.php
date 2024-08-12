@@ -70,7 +70,7 @@ trait TaskResourceIncludes
 
         if ($array['screen']) {
             // Apply translations to screen
-            $processTranslation = new ProcessTranslation($this->process);
+            $processTranslation = new ProcessTranslation($this->processRequest->process);
             $array['screen']['config'] = $processTranslation->applyTranslations($array['screen']);
 
             // Apply translations to nested screens
@@ -109,6 +109,11 @@ trait TaskResourceIncludes
     private function includeBpmnTagName()
     {
         return ['bpmn_tag_name' => $this->getBpmnDefinition()->localName];
+    }
+
+    private function includeProcess()
+    {
+        return ['process' => $this->process];
     }
 
     private function includeInterstitial()

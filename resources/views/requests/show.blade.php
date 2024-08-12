@@ -225,12 +225,11 @@
             </div>
             <div class="tab-pane fade card card-body border-top-0 p-0" id="forms" role="tabpanel"
               aria-labelledby="forms-tab" v-show="canViewPrint">
-              <request-screens :id="requestId" :information="dataSummary" :screens="screenRequested"
-                ref="forms">
+              <request-screens :id="requestId" :information="dataSummary" ref="forms">
               </request-screens>
             </div>
             <div v-if="activeTab === 'overview'" class="tab-pane fade p-0" id="overview" role="tabpanel"
-              aria-labelledby="overview-tab" style="height: 720px">
+              aria-labelledby="overview-tab">
               <div class="card" style="border-top: none !important;">
                 <div class="card-body">
                   <h4>
@@ -499,8 +498,7 @@
           showJSONEditor: false,
           data: @json($request->getRequestData()),
           requestId: @json($request->getKey()),
-          screenRequested: @json($screenRequested),
-          request: @json($request),
+          request: @json($request->getRequestAsArray()),
           files: @json($files),
           refreshTasks: 0,
           canCancel: @json($canCancel),
@@ -574,7 +572,17 @@
         dataSummary() {
           let options = {};
           this.request.summary.forEach(option => {
-            options[option.key] = option.value;
+            if (option.type === 'datetime') {
+              options[option.key] = moment(option.value).
+                      tz(window.ProcessMaker.user.timezone).
+                      format("MM/DD/YYYY HH:mm");
+            } else if (option.type === 'date') {
+              options[option.key] = moment(option.value).
+                  tz(window.ProcessMaker.user.timezone).
+                  format("MM/DD/YYYY");
+            } else {
+              options[option.key] = option.value;
+            }
           });
           return options;
         },

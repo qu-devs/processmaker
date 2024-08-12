@@ -1,6 +1,6 @@
 {
     "name": "processmaker/processmaker",
-    "version": "4.10.0",
+    "version": "4.10.3+nightly-20240724",
     "description": "BPM PHP Software",
     "keywords": [
         "php bpm processmaker"
@@ -48,7 +48,7 @@
         "processmaker/docker-executor-node": "1.1.0",
         "processmaker/docker-executor-php": "1.2.0",
         "processmaker/laravel-i18next": "dev-master",
-        "processmaker/nayra": "1.10.0",
+        "processmaker/nayra": "1.11.1",
         "processmaker/pmql": "1.12.1",
         "processmaker/report-maker": "^1.0",
         "processmaker/resources": "^1.0",
@@ -108,7 +108,7 @@
             "Gmail"
         ],
         "processmaker": {
-            "build": "02fc6153",
+            "build": "4ee84764",
             "custom": {
                 "package-ellucian-ethos": "1.16.0",
                 "package-plaid": "1.6.0",
@@ -119,7 +119,7 @@
                 "package-pinnacle": "dev-fall",
                 "package-esign": "dev-fall",
                 "package-thermofisher": "dev-fall",
-                "customer-adoa": "dev-fall",
+                "package-zj-adoa": "dev-fall",
                 "pps-file-storage": "dev-fall",
                 "package-csi": "dev-fall",
                 "package-jxchange": "dev-fall",
@@ -140,39 +140,39 @@
             },
             "enterprise": {
                 "connector-docusign": "1.9.0",
-                "connector-idp": "1.9.4",
-                "connector-pdf-print": "1.16.1",
-                "connector-send-email": "1.26.3",
+                "connector-idp": "1.9.5",
+                "connector-pdf-print": "1.16.2",
+                "connector-send-email": "1.26.5",
                 "connector-slack": "1.8.0",
                 "docker-executor-cdata": "1.4.1",
                 "docker-executor-node-ssr": "1.5.0",
-                "package-ab-testing": "1.0.15",
+                "package-ab-testing": "1.1.1",
                 "package-actions-by-email": "1.17.0",
                 "package-advanced-user-manager": "1.11.0",
-                "package-ai": "1.7.19",
-                "package-analytics-reporting": "1.6.0",
-                "package-auth": "1.18.0",
-                "package-cdata": "1.4.4",
-                "package-collections": "2.17.0",
-                "package-comments": "1.12.6",
-                "package-conversational-forms": "1.8.1",
-                "package-data-sources": "1.26.1",
-                "package-decision-engine": "1.9.15",
-                "package-dynamic-ui": "1.18.3",
-                "package-files": "1.15.1",
+                "package-ai": "1.8.1",
+                "package-analytics-reporting": "1.7.1",
+                "package-auth": "1.19.2",
+                "package-cdata": "1.4.5",
+                "package-collections": "2.17.1",
+                "package-comments": "1.13.0",
+                "package-conversational-forms": "1.8.2",
+                "package-data-sources": "1.27.2",
+                "package-decision-engine": "1.9.16",
+                "package-dynamic-ui": "1.20.2",
+                "package-files": "1.16.0",
                 "package-googleplaces": "1.11.0",
                 "package-photo-video": "1.5.1",
-                "package-pm-blocks": "1.6.6",
+                "package-pm-blocks": "1.6.8",
                 "package-process-documenter": "1.9.0",
                 "package-process-optimization": "1.10.0",
                 "package-product-analytics": "1.5.8",
-                "package-projects": "1.3.0",
-                "package-savedsearch": "1.33.16",
+                "package-projects": "1.4.1",
+                "package-savedsearch": "1.34.3",
                 "package-sentry": "1.8.0",
                 "package-signature": "1.12.0",
-                "package-testing": "1.2.21",
+                "package-testing": "1.3.1",
                 "package-translations": "2.9.0",
-                "package-versions": "1.10.1",
+                "package-versions": "1.10.2",
                 "package-vocabularies": "2.15.2",
                 "package-webentry": "2.21.2",
                 "packages": "^0"
@@ -185,7 +185,7 @@
             "microservices": {
                 "pmai": "fall-2023"
             },
-            "release": "Spring 2024"
+            "release": "Spring 2024 Pre-Release"
         }
     },
     "scripts": {

@@ -11,6 +11,7 @@ use Laravel\Scout\Searchable;
 use Log;
 use ProcessMaker\Events\ProcessUpdated;
 use ProcessMaker\Exception\PmqlMethodException;
+use ProcessMaker\Helpers\DataTypeHelper;
 use ProcessMaker\Managers\DataManager;
 use ProcessMaker\Nayra\Contracts\Bpmn\ActivityInterface;
 use ProcessMaker\Nayra\Contracts\Bpmn\FlowElementInterface;
@@ -522,13 +523,14 @@ class ProcessRequest extends ProcessMakerModel implements ExecutionInstanceInter
         $result = [];
         if (is_array($this->data)) {
             foreach ($this->getRequestData() as $key => $value) {
+                $type = DataTypeHelper::determineType('', $value);
                 $result[] = [
                     'key' => $key,
                     'value' => $value,
+                    'type' => $type
                 ];
             }
         }
-
         return $result;
     }
 
@@ -950,19 +952,26 @@ class ProcessRequest extends ProcessMakerModel implements ExecutionInstanceInter
         return Media::getFilesRequest($this);
     }
 
-    public function getErrors()
+    public function getErrors($limit = 10)
     {
         if ($this->errors) {
-            return $this->errors;
+            return array_slice($this->errors, -$limit);
         }
 
         // select tokens with errors
         return $this->tokens()
             ->select('token_properties->error as message', 'created_at', 'element_name')
             ->where('status', '=', ActivityInterface::TOKEN_STATE_FAILING)
-            ->limit(10)
+            ->limit($limit)
             ->get()
             ->toArray();
+    }
+
+    public function getRequestAsArray()
+    {
+        $array = $this->toArray();
+        unset($array['process_version']['svg']);
+        return $array;
     }
 
     /**
@@ -1047,10 +1056,6 @@ class ProcessRequest extends ProcessMakerModel implements ExecutionInstanceInter
 
     public function getProcessVersionAlternativeAttribute(): string | null
     {
-        if (class_exists('ProcessMaker\Package\PackageABTesting\Models\Alternative')) {
-            return $this->processVersion?->alternative;
-        }
-
-        return null;
+        return $this->processVersion?->alternative ?? 'A';
     }
 }

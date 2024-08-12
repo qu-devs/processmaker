@@ -164,6 +164,8 @@ class Process extends ProcessMakerModel implements HasMedia, ProcessModelInterfa
 
     const ASSIGNMENT_PROCESS = 'Assignment process';
 
+    const NOT_ASSIGNABLE_USER_STATUS = ['INACTIVE', 'OUT_OF_OFFICE'];
+
     protected $connection = 'processmaker';
 
     /**
@@ -758,6 +760,16 @@ class Process extends ProcessMakerModel implements HasMedia, ProcessModelInterfa
         // We need to remove inactive users.
         $users = User::whereIn('id', array_unique($assignedUsers))->where('status', 'ACTIVE')->pluck('id')->toArray();
 
+        // user in OUT_OF_OFFICE
+        $outOfOffice = User::whereIn('id', array_unique($assignedUsers))->where('status', 'OUT_OF_OFFICE')->get();
+
+        foreach ($outOfOffice as $user) {
+            $delegation = $user->delegationUser()->pluck('id')->toArray();
+            if ($delegation) {
+                $users[] = $delegation[0];
+            }
+        }
+
         foreach ($assignedGroups as $groupId) {
             // getConsolidatedUsers already removes inactive users
             $this->getConsolidatedUsers($groupId, $users);
@@ -1002,33 +1014,46 @@ class Process extends ProcessMakerModel implements HasMedia, ProcessModelInterfa
     /**
      * Get a consolidated list of users within groups.
      *
-     * @param binary $group_id
+     * @param mixed $group_id
      * @param array $users
      *
      * @return array
      */
-    public function getConsolidatedUsers($group_id, array &$users)
+    public function getConsolidatedUsers($groupOrGroups, array &$users)
     {
-        $users = array_unique(array_merge(
-            GroupMember::where([
-                ['group_id', '=', $group_id],
-                ['member_type', '=', User::class],
-            ])
-                ->leftjoin('users', 'users.id', '=', 'group_members.member_id')
-                ->where('users.status', 'ACTIVE')->pluck('member_id')->toArray(),
-            $users
-        ));
-        $groupMembers = GroupMember::where([
-            ['group_id', '=', $group_id],
-            ['member_type', '=', Group::class],
-        ])
+        $isArray = is_array($groupOrGroups);
+        if ($isArray) {
+            $groupOrGroups = array_unique($groupOrGroups);
+        }
+        // Add the users from the groups
+        GroupMember::select('member_id')
+            ->where('member_type', User::class)
+            ->when($isArray, function ($query) use ($groupOrGroups) {
+                $query->whereIn('group_id', $groupOrGroups);
+            }, function ($query) use ($groupOrGroups) {
+                $query->where('group_id', $groupOrGroups);
+            })
+            ->leftjoin('users', 'users.id', '=', 'group_members.member_id')
+            ->whereNotIn('users.status', Process::NOT_ASSIGNABLE_USER_STATUS)
+            ->chunk(1000, function ($members) use (&$users) {
+                $userIds = $members->pluck('member_id')->toArray();
+                $users = array_unique(array_merge($users, $userIds));
+            });
+
+        // Add the users from the subgroups
+        GroupMember::select('member_id')
+            ->where('member_type', Group::class)
+            ->when($isArray, function ($query) use ($groupOrGroups) {
+                $query->whereIn('group_id', $groupOrGroups);
+            }, function ($query) use ($groupOrGroups) {
+                $query->where('group_id', $groupOrGroups);
+            })
             ->leftjoin('groups', 'groups.id', '=', 'group_members.member_id')
             ->where('groups.status', 'ACTIVE')
-            ->pluck('member_id');
-
-        foreach ($groupMembers as $groupMember) {
-            $this->getConsolidatedUsers($groupMember, $users);
-        }
+            ->chunk(1000, function ($members) use (&$users) {
+                $groupIds = $members->pluck('member_id')->toArray();
+                $users = $this->addActiveAssignedGroupMembers($groupIds, $users);
+            });
 
         return $users;
     }
@@ -1151,35 +1176,31 @@ class Process extends ProcessMakerModel implements HasMedia, ProcessModelInterfa
         foreach ($this->start_events as $startEvent) {
             $webEntryProperties = (isset($startEvent['config']) && isset(json_decode($startEvent['config'])->web_entry) ? json_decode($startEvent['config'])->web_entry : null);
 
-            if ($webEntryProperties && isset($webEntryProperties->webentryRouteConfig)) {
-                switch ($webEntryProperties->webentryRouteConfig->urlType) {
-                    case 'standard-url':
-                        $this->deleteUnusedCustomRoutes(
-                            $webEntryProperties->webentryRouteConfig->firstUrlSegment,
-                            $webEntryProperties->webentryRouteConfig->processId,
-                            $webEntryProperties->webentryRouteConfig->nodeId
-                        );
-                        break;
+            if (!($webEntryProperties && isset($webEntryProperties->webentryRouteConfig))) {
+                continue;
+            }
 
-                    default:
-                        if ($webEntryProperties->webentryRouteConfig->firstUrlSegment !== '') {
-                            $webentryRouteConfig = $webEntryProperties->webentryRouteConfig;
-                            try {
-                                WebentryRoute::updateOrCreate(
-                                    [
-                                        'process_id' => $this->id,
-                                        'node_id' => $webentryRouteConfig->nodeId,
-                                    ],
-                                    [
-                                        'first_segment' => $webentryRouteConfig->firstUrlSegment,
-                                        'params' => $webentryRouteConfig->parameters,
-                                    ]
-                                );
-                            } catch (\Exception $e) {
-                                \Log::info('*** Error: ' . $e->getMessage());
-                            }
-                        }
-                        break;
+            if ($webEntryProperties->webentryRouteConfig->urlType === 'standard-url') {
+                $this->deleteUnusedCustomRoutes(
+                    $webEntryProperties->webentryRouteConfig->firstUrlSegment,
+                    $webEntryProperties->webentryRouteConfig->processId,
+                    $webEntryProperties->webentryRouteConfig->nodeId
+                );
+            } elseif ($webEntryProperties->webentryRouteConfig->firstUrlSegment !== '') {
+                $webentryRouteConfig = $webEntryProperties->webentryRouteConfig;
+                try {
+                    WebentryRoute::updateOrCreate(
+                        [
+                            'process_id' => $this->id,
+                            'node_id' => $webentryRouteConfig->nodeId,
+                        ],
+                        [
+                            'first_segment' => $webentryRouteConfig->firstUrlSegment,
+                            'params' => $webentryRouteConfig->parameters,
+                        ]
+                    );
+                } catch (Exception $e) {
+                    \Log::info('*** Error: ' . $e->getMessage());
                 }
             }
         }
@@ -1250,7 +1271,7 @@ class Process extends ProcessMakerModel implements HasMedia, ProcessModelInterfa
     /**
      * Process events relationship.
      *
-     * @return \ProcessMaker\Models\ProcessEvents
+     * @return ProcessEvents
      */
     public function events()
     {
@@ -1287,7 +1308,7 @@ class Process extends ProcessMakerModel implements HasMedia, ProcessModelInterfa
     /**
      * Assignments of the process.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function assignments()
     {
@@ -1616,7 +1637,7 @@ class Process extends ProcessMakerModel implements HasMedia, ProcessModelInterfa
     private function deleteUnusedCustomRoutes($url, $processId, $nodeId)
     {
         // Delete unused custom routes
-        $customRoute = webentryRoute::where('process_id', $processId)->where('node_id', $nodeId)->first();
+        $customRoute = WebentryRoute::where('process_id', $processId)->where('node_id', $nodeId)->first();
         if ($customRoute) {
             $customRoute->delete();
         }
@@ -1751,9 +1772,9 @@ class Process extends ProcessMakerModel implements HasMedia, ProcessModelInterfa
                  ->orWhere('processes.description', 'like', $filter)
                  ->orWhere('processes.status', '=', $filterStr)
                  ->orWhereHas('user', function ($query) use ($filter) {
-                    $query->where('firstname', 'like', $filter)
-                        ->orWhere('lastname', 'like', $filter);
-                })
+                     $query->where('firstname', 'like', $filter)
+                         ->orWhere('lastname', 'like', $filter);
+                 })
                  ->orWhereIn('processes.id', function ($qry) use ($filter) {
                      $qry->select('assignable_id')
                          ->from('category_assignments')

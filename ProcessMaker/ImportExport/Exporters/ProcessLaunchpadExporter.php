@@ -12,10 +12,13 @@ class ProcessLaunchpadExporter extends ExporterBase
 
     public function export(): void
     {
-        $this->addDependent('user', $this->model->user, UserExporter::class);
+        if ($this->model->user) {
+            $this->addDependent('user', $this->model->user, UserExporter::class);
+        }
 
         $properties = json_decode($this->model->properties, true);
-        $launchScreen = Screen::where('uuid', $properties['screen_uuid'])->first();
+        $screenUuid = $properties['screen_uuid'] ?? null;
+        $launchScreen = Screen::where('uuid', $screenUuid)->first();
         if ($launchScreen) {
             $this->addDependent('screen', $launchScreen, ScreenExporter::class);
         }
