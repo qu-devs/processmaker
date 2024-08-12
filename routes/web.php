@@ -47,11 +47,11 @@ Route::middleware('auth', 'session_kill', 'sanitize', 'force_change_password', '
         Route::get('settings', [SettingsController::class, 'index'])->name('settings.index')->middleware('can:view-settings');
         Route::get('ldap-logs', [LdapLogsController::class, 'index'])->name('ldap.index')->middleware('can:view-settings');
         Route::get('settings/export', [SettingsController::class, 'export'])->name('settings.export')->middleware('can:view-settings');
-        Route::get('groups', [GroupController::class, 'index'])->name('groups.index')->middleware('can:view-groups');
+        Route::get('groups', [GroupController::class, 'index'])->name('groups.index')->middleware('can:edit-groups');
         // Route::get('groups/{group}', [GroupController::class, 'show'])->name('groups.show')->middleware('can:show-groups,group');
         Route::get('groups/{group}/edit', [GroupController::class, 'edit'])->name('groups.edit')->middleware('can:edit-groups,group');
 
-        Route::get('users', [UserController::class, 'index'])->name('users.index')->middleware('can:view-users');
+        Route::get('users', [UserController::class, 'index'])->name('users.index')->middleware('can:edit-users');
         Route::get('users/{user}/edit', [UserController::class, 'edit'])->name('users.edit')->middleware('can:edit-users,user');
 
         Route::get('auth-clients', [AuthClientController::class, 'index'])->name('auth-clients.index')->middleware('can:view-auth_clients');

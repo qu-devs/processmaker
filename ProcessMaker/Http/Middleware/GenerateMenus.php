@@ -57,7 +57,7 @@ class GenerateMenus
                     )->active('designer/*');
                 });
             }
-            if (\Auth::check() && \Auth::user()->canAny('view-users|view-groups|view-auth_clients|view-settings')) {
+            if (\Auth::check() && \Auth::user()->canAny('edit-users|edit-groups|view-auth_clients|view-settings')) {
                 $menu->group(['prefix' => 'admin'], function ($admin_items) {
                     $admin_items->add(
                         __('Admin'),
