@@ -65,5 +65,5 @@ return [
     ],
 
     // List of guards saml idp will catch Authenticated, Login and Logout events
-    'guards' => ['web'],
+    'guards' => [''],
 ];
