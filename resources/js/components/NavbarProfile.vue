@@ -59,30 +59,30 @@
             {{ $t('Files') }}
           </a>
         </li>
-        <li class="list-group-item px-2">
-          <a
-            href="https://docs.processmaker.com/"
-            role="menuitem"
-            :aria-label="$t('Documentation')"
-            target="_blank"
-          >
-            <i
-              data-v-2eb90a9e
-              class="fas fa-question-circle fa-fw fa-lg mr-1"
-            />
-            {{ $t('Documentation') }}
-          </a>
-        </li>
-        <li class="list-group-item px-2">
-          <a
-            href="/about"
-            role="menuitem"
-            :aria-label="$t('About')"
-          >
-            <i class="fas fa-info-circle fa-fw fa-lg mr-1" />
-            {{ $t('About') }}
-          </a>
-        </li>
+<!--        <li class="list-group-item px-2">-->
+<!--          <a-->
+<!--            href="https://docs.processmaker.com/"-->
+<!--            role="menuitem"-->
+<!--            :aria-label="$t('Documentation')"-->
+<!--            target="_blank"-->
+<!--          >-->
+<!--            <i-->
+<!--              data-v-2eb90a9e-->
+<!--              class="fas fa-question-circle fa-fw fa-lg mr-1"-->
+<!--            />-->
+<!--            {{ $t('Documentation') }}-->
+<!--          </a>-->
+<!--        </li>-->
+<!--        <li class="list-group-item px-2">-->
+<!--          <a-->
+<!--            href="/about"-->
+<!--            role="menuitem"-->
+<!--            :aria-label="$t('About')"-->
+<!--          >-->
+<!--            <i class="fas fa-info-circle fa-fw fa-lg mr-1" />-->
+<!--            {{ $t('About') }}-->
+<!--          </a>-->
+<!--        </li>-->
         <li class="list-group-item px-2">
           <a
             href="/logout"
